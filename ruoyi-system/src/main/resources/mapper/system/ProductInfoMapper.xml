@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.shopMapper.ProductInfoMapper">
+    <resultMap id="ProductInfoResult" type="ProductInfo">
+        <id     property="productid"      column="product_id"      />
+        <result property="productcore"    column="product_core"    />
+        <result property="productname"    column="product_name"    />
+        <result property="barcode"    column="bar_code"    />
+        <result property="brandid"    column="brand_id"    />
+        <result property="onecategoryid"    column="one_category_id"    />
+        <result property="twocategoryid"    column="two_category_id"    />
+        <result property="threecategoryid"    column="three_category_id"    />
+        <result property="supplierid"    column="supplier_id"    />
+        <result property="categoryid"    column="category_id"    />
+        <result property="price"    column="price"    />
+        <result property="averagecost"    column="average_cost"    />
+        <result property="publishstatus"    column="publish_status"    />
+        <result property="auditstatus"    column="audit_status"    />
+        <result property="weight"    column="weight"    />
+        <result property="length"    column="length"    />
+        <result property="height"    column="height"    />
+        <result property="width"    column="width"    />
+        <result property="colortype"    column="color_type"    />
+        <result property="productiondate"    column="production_date"    />
+        <result property="shelflife"    column="shelf_life"    />
+        <result property="descript"    column="descript"    />
+        <result property="indate"    column="indate"    />
+        <result property="modifiedtime"    column="modified_time"    />
+        <result property="salesQuantity"    column="sales_quantity"    />
+        <result property="labelName"    column="label_name"    />
+        <result property="cornerQuantity"    column="corner_quantity"    />
+        <result property="wpId"    column="wp_id"    />
+        <result property="wId"    column="w_id"    />
+        <result property="currentCnt"    column="current_cnt"    />
+        <result property="lockCnt"    column="lock_cnt"    />
+        <result property="inTransitCnt"    column="in_transit_cnt"    />
+        <result property="averageCost"    column="average_cost"    />
+        <result property="modifiedTime"    column="modified_time"    />
+
+    </resultMap>
+
+    <sql id="ProductInfoMain">
+               select pi.product_id,pi.product_core,pi.product_name ,pi.bar_code ,pi.brand_id ,pi.one_category_id ,pi.two_category_id ,pi.three_category_id ,pi.supplier_id ,pi.category_id ,pi.price ,pi.average_cost ,pi.publish_status ,pi.audit_status,pi.production_date,pi.shelf_life,pi.descript ,pi.indate,pi.modified_time ,pi.sales_quantity,pi.label_name,pi.corner_quantity,wp.wp_id,wp.w_id ,wp.current_cnt ,wp.lock_cnt ,wp.in_transit_cnt ,wp.average_cost ,wp.modified_time
+                from product_info pi,warehouse_product wp
+                where pi.product_id =wp.product_id
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="sqlwhereSearch">
+        <where>
+            <if test="productid !=null">
+                and product_id = #{productid}
+            </if>
+            <if test="barcode !=null and barcode != ''">
+                and bar_code = #{barcode}
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="selectListId" parameterType="ProductInfo" resultMap="ProductInfoResult">
+        <include refid="ProductInfoMain"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+
+    <select id="findAllList" parameterType="ProductInfo" resultMap="ProductInfoResult">
+        <include refid="ProductInfoMain"/>
+        <where>
+            <if test="productname != null and productname != ''">
+                AND product_name like concat('%', #{productname}, '%')
+            </if>
+            <if test="descript != null and descript != ''">
+                AND descript = #{descript}
+            </if>
+
+        </where>
+    </select>
+
+    <update id="updataProduct" parameterType="ProductInfo" >
+         update product_info
+        <set>
+            <if test="productname != null and productname != ''">product_name = #{productname},</if>
+
+
+        </set>
+        where product_id = #{productid}
+    </update>
+    
+    
+    <delete id="deleteConfigById" parameterType="Long">
+        delete from product_info where product_id = #{productid}
+    </delete>
+    
+    <delete id="deleteConfigByIds" parameterType="Long">
+        delete from product_info where product_id in 
+        <foreach item="productid" collection="array" open="(" separator="," close=")">
+            #{productid}
+        </foreach>
+    </delete>
+    
+</mapper>

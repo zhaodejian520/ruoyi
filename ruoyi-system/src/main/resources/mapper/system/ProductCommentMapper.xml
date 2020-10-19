@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.shopMapper.ProductCommentMapper">
+
+    <resultMap id="ProductCommentResult" type="ProductComment">
+        <id     property="commentId"      column="comment_id"      />
+        <result property="productId"    column="product_id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="modifiedTime"    column="modified_time"    />
+        <result property="orderSn"    column="order_sn"    />
+        <result property="productName"    column="product_name"    />
+        <result property="userName"    column="user_name"    />
+    </resultMap>
+
+    <sql id="ProductCommentList">
+        select su.user_name,om.order_sn,pi.product_name,pc.title,pc.content,pc.audit_time
+        from product_comment pc,order_master om,product_info pi,sys_user su
+        where pc.product_id = pi.product_id and pc.order_id = om.order_id and pc.customer_id = su.user_id
+        GROUP BY pi.product_id
+    </sql>
+
+
+
+
+    <select id="findAllById" parameterType="ProductComment" resultMap="ProductCommentResult">
+        select pc.title,pc.content,pc.audit_time
+        from product_comment pc
+        left join order_master om on pc.order_id = om.order_id
+        left join product_info pi on pc.product_id = pi.product_id
+        left join sys_user su on pc.customer_id = su.user_id
+        <where>
+            <if test="productid !=null">
+                and pi.product_id = #{productid}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateStatus" parameterType="ProductComment">
+         update product_comment set audit_status=1  where comment_id = #{commentId}
+    </update>
+
+    <delete id="deleteProductById" parameterType="Long">
+        delete from product_comment where comment_id = #{commentId}
+    </delete>
+
+
+
+    <select id="findAllList" parameterType="ProductComment" resultMap="ProductCommentResult">
+        <include refid="ProductCommentList"/>
+        <where>
+            <if test="productName != null and productName != ''">
+                AND product_name like concat('%', #{productName}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND user_name like concat('%', #{userName}, '%')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

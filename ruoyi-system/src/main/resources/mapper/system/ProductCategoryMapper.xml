@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.shopMapper.ProductCategoryMapper">
+    <resultMap id="ProductCategoryResult" type="ProductCategory">
+        <id     property="categoryId"      column="category_id"      />
+        <result property="brandId"    column="brand_id"    />
+        <result property="categoryName"    column="category_name"    />
+        <result property="categoryCode"    column="category_code"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="categoryLevel"    column="category_level"    />
+        <result property="categoryStatus"    column="category_status"    />
+        <result property="modifiedTime"    column="modified_time"    />
+    </resultMap>
+
+    <sql id="ProductCategoryMain">
+        select p.category_id,p.brand_id,p.category_name,p.category_code,p.parent_id,p.category_level,p.category_status,p.modified_time
+        from product_category p
+    </sql>
+
+
+    <select id="findAllList" parameterType="ProductCategory" resultMap="ProductCategoryResult">
+        <include refid="ProductCategoryMain" />
+        <where>
+            <if test="categoryName !=null and categoryName !=''">
+                AND category_name like concat('%',#{categoryName},'%')
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insertCategory" parameterType="ProductCategory">
+        insert into product_category (
+        <if test="brandId != null and brandId != '' ">brand_id,</if>
+        <if test="categoryName != null and categoryName != '' ">category_name,</if>
+        <if test="categoryCode != null and categoryCode != '' ">category_code,</if>
+        <if test="parentId != null and parentId != '' ">parent_id,</if>
+        <if test="categoryLevel != null and categoryLevel != '' ">category_level,</if>
+        <if test="categoryStatus != null and categoryStatus != ''">category_status,</if>
+        modified_time
+        )values(
+        <if test="brandId != null and brandId != ''">#{brandId},</if>
+        <if test="categoryName != null and categoryName != ''">#{categoryName},</if>
+        <if test="categoryCode != null and categoryCode != ''">#{categoryCode},</if>
+        <if test="parentId != null and parentId != ''">#{parentId},</if>
+        <if test="categoryLevel != null and categoryLevel != ''">#{categoryLevel},</if>
+        <if test="categoryStatus != null and categoryStatus != ''">#{categoryStatus},</if>
+        sysdate()
+        )
+    </insert>
+
+    <update id="updataByOneId" parameterType="ProductCategory">
+        update product_category set category_status=0  where category_id = #{categoryId}
+    </update>
+
+
+    <delete id="deleteCategoryByIds" parameterType="Long">
+        delete from product_category where category_id = #{categoryId}
+    </delete>
+
+
+
+</mapper>

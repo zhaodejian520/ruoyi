@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.shopMapper.ProductInfoVoMapper">
+        <resultMap type="ProductInfoVo" id="ProductInfoResult">
+                <id     property="productid"      column="product_id"      />
+                <result property="productname"    column="product_name"    />
+                <result property="price"    column="price"    />
+                <result property="descript"    column="descript"    />
+                <result property="currentCnt"    column="current_cnt"    />
+                <result property="productcore"    column="product_core"    />
+                <result property="cornerQuantity"    column="corner_quantity"    />
+                <result property="labelName"    column="label_name"    />
+                <result property="salesQuantity"    column="sales_quantity"    />
+
+        </resultMap>
+
+
+        <sql id="ProductInfoMaVo">
+                select DISTINCT pi.product_id,pi.product_name,pi.price,pi.descript,wp.current_cnt,pi.product_core,cm.corner_quantity,pl.label_name,sv.sales_quantity
+                from product_info pi,product_pic_info ppi,supplier_info si,warehouse_product wp,corner_mark cm,product_label pl,sales_volume sv
+                where pi.product_id = ppi.product_id and si.supplier_id=pi.supplier_id and wp.product_id=pi.product_id
+                and pi.product_id=pl.product_id and pi.product_id=cm.product_id and sv.product_id = pi.product_id
+        </sql>
+
+        <!-- 查询条件 -->
+        <sql id="sqlwhereSearch">
+                <where>
+                        <if test="productid !=null">
+                                and product_id = #{productid}
+                        </if>
+                        <if test="currentCnt !=null and currentCnt != ''">
+                                and current_cnt = #{currentCnt}
+                        </if>
+                </where>
+        </sql>
+
+        <select id="selectConfig" parameterType="ProductInfoVo" resultMap="ProductInfoResult">
+                <include refid="ProductInfoMaVo"/>
+                <include refid="sqlwhereSearch"/>
+        </select>
+
+        <select id="selectConfigList" parameterType="ProductInfoVo" resultMap="ProductInfoResult">
+                <include refid="ProductInfoMaVo"/>
+                <where>
+                        <if test="productname != null and productname != ''">
+                                AND product_name like concat('%', #{productname}, '%')
+                        </if>
+                        <if test="descript != null and descript != ''">
+                                AND descript = #{descript}
+                        </if>
+
+                </where>
+        </select>
+
+
+</mapper>
