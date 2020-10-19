@@ -38,6 +38,7 @@ public class ProductCommentController extends BaseController {
         Long userId = loginUser.getUser().getUserId();
         System.err.println("==============222222222222222222222"+ userId);
 //        productComment.setCustomerId(userId);
+        // 测试一下看看能不能用
         List<ProductComment> list = productCommentService.findAllList(productComment, userId);
         return AjaxResult.success(list);
     }
