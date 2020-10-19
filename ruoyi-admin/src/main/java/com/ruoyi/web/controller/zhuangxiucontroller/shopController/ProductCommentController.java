@@ -39,6 +39,7 @@ public class ProductCommentController extends BaseController {
         System.err.println("==============222222222222222222222"+ userId);
 //        productComment.setCustomerId(userId);
         // 测试一下看看能不能用
+        //刚那会忘了怎么弄得了 从新再弄一遍
         List<ProductComment> list = productCommentService.findAllList(productComment, userId);
         return AjaxResult.success(list);
     }
