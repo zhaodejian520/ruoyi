@@ -1,4 +1,4 @@
-package com.sample;
+package com.ruoyi.system.domain.zhuangxiumain.orderformMain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

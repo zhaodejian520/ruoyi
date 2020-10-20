@@ -32,7 +32,7 @@ public class ProductComment implements Serializable {
   private long orderSn;
   private String productName;
   private String userName;
-
+  private long userId;
 
 
 }

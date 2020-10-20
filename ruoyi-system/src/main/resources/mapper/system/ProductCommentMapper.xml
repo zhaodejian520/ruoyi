@@ -17,7 +17,9 @@
         <result property="orderSn"    column="order_sn"    />
         <result property="productName"    column="product_name"    />
         <result property="userName"    column="user_name"    />
+        <result property="userId"    column="user_id"    />
     </resultMap>
+
 
     <sql id="ProductCommentList">
         select su.user_name,om.order_sn,pi.product_name,pc.title,pc.content,pc.audit_time
@@ -28,7 +30,7 @@
 
 
 
-
+<!--查询全部用户对这个的全部评价-->
     <select id="findAllById" parameterType="ProductComment" resultMap="ProductCommentResult">
         select pc.title,pc.content,pc.audit_time
         from product_comment pc
@@ -51,10 +53,13 @@
     </delete>
 
 
-
+    <!--查看评价的用户有哪些-->
     <select id="findAllList" parameterType="ProductComment" resultMap="ProductCommentResult">
         <include refid="ProductCommentList"/>
         <where>
+            <if test="productid !=null">
+                and pi.user_id = #{userId}
+            </if>
             <if test="productName != null and productName != ''">
                 AND product_name like concat('%', #{productName}, '%')
             </if>
