@@ -39,9 +39,9 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     }
 
     @Override
-    public ProductInfo selectListId(Long productid) {
+    public ProductInfo selectListId(Integer productid) {
         ProductInfo productInfo = new ProductInfo();
-        productInfo.setProductid(productid);
+        productInfo.setProductId(productid);
         return productInfoMapper.selectListId(productInfo);
     }
 
@@ -60,6 +60,25 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     public int deleteConfigByIds(Long[] productids) {
         return productInfoMapper.deleteConfigByIds(productids);
     }
+
+
+//    这个是在店铺订单中用的
+    @Override
+    public List<ProductInfo> findAllddList(ProductInfo productInfo) {
+        return productInfoMapper.findAllddList(productInfo);
+    }
+
+    @Override
+    public List<ProductInfo> findAllddListTwo(ProductInfo productInfo) {
+        return productInfoMapper.findAllddListTwo(productInfo);
+    }
+
+    @Override
+    public ProductInfo selectListddId(Integer categoryId) {
+        return productInfoMapper.selectListddId(categoryId);
+    }
+//******************************
+
 
 //    @Override
 //    public Result findAll(Map<String, Object> map) {

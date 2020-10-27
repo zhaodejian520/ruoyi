@@ -23,6 +23,14 @@ public class ProductCategoryController extends BaseController {
     @Autowired(required = false)
     private ProductCategoryService productCategoryService;
 
+
+
+
+
+
+//    以上是店铺分类用的
+//    以下忘了是干的了
+
     @Log(title = "查询一级分类", businessType = BusinessType.EXPORT)
     @GetMapping("/findAllList")
     public TableDataInfo findAllList(ProductCategory productCategory){

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.shopMapper.SupplierInfoMapper">
+
+    <resultMap id="SupplierInfoResult" type="SupplierInfo">
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="supplierCode"    column="supplier_code"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="supplierType"    column="supplier_type"    />
+        <result property="supplierTypeform"    column="supplier_typeform"    />
+        <result property="linkMan"    column="link_man"    />
+        <result property="phoneNumber"    column="phone_number"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="bankAccount"    column="bank_account"    />
+        <result property="address"    column="address"    />
+        <result property="supplierStatus"    column="supplier_status"    />
+        <result property="modifiedTime"    column="modified_time"    />
+        <result property="shopsName"    column="shops_name"    />
+    </resultMap>
+
+    <sql id="selectSupplierInfoVo">
+        select supplier_id, supplier_code, supplier_name, supplier_type, supplier_typeform, link_man, phone_number, bank_name, bank_account, address, supplier_status, modified_time, shops_name from supplier_info
+    </sql>
+
+
+    <select id="selectSupplierInfoList" parameterType="SupplierInfo" resultMap="SupplierInfoResult">
+        <include refid="selectSupplierInfoVo"/>
+        <where>
+            <if test="supplierCode != null  and supplierCode != ''"> and supplier_code = #{supplierCode}</if>
+            <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+        </where>
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+    <select id="selectSuppTypeAll" resultMap="SupplierInfoResult">
+        <include refid="selectSupplierInfoVo"/>
+    </select>
+
+
+    <select id="selectSuppTypeById" parameterType="Integer" resultMap="SupplierInfoResult">
+        <include refid="selectSupplierInfoVo"/>
+        where supplier_id = #{supplierId}
+    </select>
+
+    <select id="selectSuppTypeByType" parameterType="String" resultMap="SupplierInfoResult">
+        <include refid="selectSupplierInfoVo"/>
+        where supplier_name = #{supplierName}
+    </select>
+
+    <select id="checkSuppTypeUnique" parameterType="String" resultMap="SupplierInfoResult">
+        <include refid="selectSupplierInfoVo"/>
+        where supplier_name = #{supplierName} limit 1
+    </select>
+
+
+
+
+
+
+
+</mapper>

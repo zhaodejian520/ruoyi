@@ -1,17 +1,15 @@
-package com.ruoyi.system.domain.zhuangxiumain.shopMain;
+package com.ruoyi.common.core.domain.entity;
+
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.*;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -23,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductInfo extends BaseEntity  {
+public class ProductInfow extends BaseEntity  {
 
     private static final long serialVersionUID = 1L;
 
@@ -126,20 +124,19 @@ public class ProductInfo extends BaseEntity  {
     private Date modifiedTime;
 
     /** $column.columnComment */
-    @Excel(name = "忘了")
+    @Excel(name = "最后修改时间")
     private Long cornerQuantity;
 
     /** $column.columnComment */
-    @Excel(name = "忘了")
+    @Excel(name = "最后修改时间")
     private String labelName;
 
     /** $column.columnComment */
-    @Excel(name = "忘了")
+    @Excel(name = "最后修改时间")
     private Long salesQuantity;
 
 
-    @Excel(name = "用户ID")
-    private Long userId;
+
 
     /***
      * 商品库存字段

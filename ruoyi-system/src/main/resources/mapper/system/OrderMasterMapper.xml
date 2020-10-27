@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.orderformMapper.OrderMasterMapper">
+    <resultMap id="OrderMasterResult" type="OrderMaster">
+        <id     property="orderId"      column="order_id"      />
+        <result property="orderSn"    column="order_sn"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="shippingUser"    column="shipping_user"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+        <result property="address"    column="address"    />
+        <result property="paymentMethod"    column="payment_method"    />
+        <result property="orderMoney"    column="order_money"    />
+        <result property="districtMoney"    column="district_money"    />
+        <result property="shippingMoney"    column="shipping_money"    />
+        <result property="paymentMoney"    column="payment_money"    />
+        <result property="shippingCompName"    column="shipping_comp_name"    />
+        <result property="shippingSn"    column="shipping_sn"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="shippingTime"    column="shipping_time"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="orderPoint"    column="order_point"    />
+        <result property="invoiceTime"    column="invoice_time"    />
+        <result property="modifiedTime"    column="modified_time"    />
+        <result property="productPrice"    column="product_price"    />
+        <result property="productName"    column="product_name"    />
+        <result property="userId"    column="user_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="userName"    column="user_name"    />
+    </resultMap>
+
+
+
+    <sql id="findListIdMain">
+        select od.product_price,om.order_money,om.shipping_user,om.order_sn,om.pay_time,om.shipping_sn,pi.product_name
+        from order_master om,order_detail od,sys_user su,product_info pi,warehouse_info wi,warehouse_product wp
+        where om.customer_id = su.user_id and od.order_id = om.order_id and od.product_id = pi.product_id
+        and od.w_id = wi.w_id and wi.w_id = wp.w_id
+    </sql>
+
+    <select id="findAllList" parameterType="OrderMaster" resultMap="OrderMasterResult">
+        select su.user_id,om.order_id,om.order_sn,om.pay_time,om.shipping_sn,pi.product_name,om.order_money,om.shipping_user,om.province,om.city,om.district,om.address,om.shipping_comp_name
+        from order_master om,order_detail od,sys_user su,product_info pi,warehouse_info wi,warehouse_product wp
+        where om.customer_id = su.user_id and od.order_id = om.order_id and od.product_id = pi.product_id
+        and od.w_id = wi.w_id and wi.w_id = wp.w_id
+        <if test="userId != null and userId != ''">
+            AND su.user_id = #{userId}
+        </if>
+        GROUP BY om.order_id
+    </select>
+
+    <select id="findAll" parameterType="OrderMaster" resultMap="OrderMasterResult">
+            select province ,city ,district ,address ,shipping_comp_name
+            from order_master
+    </select>
+
+    <select id="findAllById" parameterType="Long" resultMap="OrderMasterResult">
+        <include refid="findListIdMain" />
+        <where>
+            <if test="productId != null and productId != ''">
+                AND pi.product_id = #{productId}
+            </if>
+        </where>
+    </select>
+
+
+
+    <!--  以下几个 是店铺中的 订单中的 -->
+
+    <select id="selectOrderDingDanList" parameterType="OrderMaster" resultMap="OrderMasterResult">
+       select om.order_sn, om.shipping_user, om.address,om.payment_method,om.order_money ,om.shipping_time,om.pay_time,om.receive_time,su.user_name
+				from order_master om,order_detail od, sys_user su
+				where om.order_id = od.order_id and om.customer_id = su.user_id
+				and od.product_id = #{productId} and su.user_id =#{userId}
+    </select>
+
+    <select id="selectOrderDingDanById" parameterType="Integer" resultMap="OrderMasterResult">
+        select om.order_sn, om.shipping_user, om.address,om.payment_method,om.order_money ,om.shipping_time,om.pay_time,om.receive_time,pi.product_name ,su.user_name
+        from order_master om,order_detail od, product_info pi, sys_user su
+        where om.order_id = od.order_id and od.product_id = pi.product_id and om.customer_id = su.user_id
+        and pi.order_id = #{orderId}
+    </select>
+
+
+
+
+
+
+    <!--以下是总权限的订单管理**********************************-->
+
+
+    <select id="selectOrderMasterList" parameterType="OrderMaster" resultMap="OrderMasterResult">
+        select om.order_id,om.order_sn,om.pay_time,om.shipping_sn,om.order_money,om.shipping_user,pi.product_name,su.user_name,om.payment_money
+        from order_master om,order_detail od,sys_user su,product_info pi,warehouse_info wi,warehouse_product wp,supplier_info si
+        where om.customer_id = su.user_id and od.order_id = om.order_id and od.product_id = pi.product_id
+        and od.w_id = wi.w_id and wi.w_id = wp.w_id and pi.supplier_id = si.supplier_id
+        GROUP BY si.supplier_id
+    </select>
+
+    <select id="selectOrderMasterById" parameterType="Integer" resultMap="OrderMasterResult">
+        select om.order_id,om.order_sn,om.pay_time,om.shipping_sn,om.order_money,om.shipping_user,pi.product_name,su.user_name,om.payment_money
+        from order_master om,order_detail od,sys_user su,product_info pi,warehouse_info wi,warehouse_product wp
+        where om.customer_id = su.user_id and od.order_id = om.order_id and od.product_id = pi.product_id
+        and od.w_id = wi.w_id and wi.w_id = wp.w_id
+        and om.order_id= #{orderId}
+    </select>
+
+
+
+    <insert id="insertOrderMaster" parameterType="OrderMaster" useGeneratedKeys="true" keyProperty="orderId">
+        insert into order_master
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null">order_sn,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="shippingUser != null and shippingUser != ''">shipping_user,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="district != null">district,</if>
+            <if test="address != null and address != ''">address,</if>
+            <if test="paymentMethod != null">payment_method,</if>
+            <if test="orderMoney != null">order_money,</if>
+            <if test="districtMoney != null">district_money,</if>
+            <if test="shippingMoney != null">shipping_money,</if>
+            <if test="paymentMoney != null">payment_money,</if>
+            <if test="shippingCompName != null">shipping_comp_name,</if>
+            <if test="shippingSn != null">shipping_sn,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="shippingTime != null">shipping_time,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="orderPoint != null">order_point,</if>
+            <if test="invoiceTime != null">invoice_time,</if>
+            <if test="modifiedTime != null">modified_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null">#{orderSn},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="shippingUser != null and shippingUser != ''">#{shippingUser},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="district != null">#{district},</if>
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="paymentMethod != null">#{paymentMethod},</if>
+            <if test="orderMoney != null">#{orderMoney},</if>
+            <if test="districtMoney != null">#{districtMoney},</if>
+            <if test="shippingMoney != null">#{shippingMoney},</if>
+            <if test="paymentMoney != null">#{paymentMoney},</if>
+            <if test="shippingCompName != null">#{shippingCompName},</if>
+            <if test="shippingSn != null">#{shippingSn},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="shippingTime != null">#{shippingTime},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="orderPoint != null">#{orderPoint},</if>
+            <if test="invoiceTime != null">#{invoiceTime},</if>
+            <if test="modifiedTime != null">#{modifiedTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOrderMaster" parameterType="OrderMaster">
+        update order_master
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderSn != null">order_sn = #{orderSn},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="shippingUser != null and shippingUser != ''">shipping_user = #{shippingUser},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="deleteOrderMasterById" parameterType="Integer">
+        delete from order_master where order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteOrderMasterByIds" parameterType="String">
+        delete from order_master where order_id in
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

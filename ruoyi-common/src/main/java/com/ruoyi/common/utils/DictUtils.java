@@ -3,9 +3,14 @@ package com.ruoyi.common.utils;
 import java.util.Collection;
 import java.util.List;
 import com.ruoyi.common.constant.Constants;
+
+import com.ruoyi.common.core.domain.entity.ProductInfow;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.utils.spring.SpringUtils;
+
+import javax.swing.*;
+
 
 /**
  * 字典工具类
@@ -30,6 +35,10 @@ public class DictUtils
         SpringUtils.getBean(RedisCache.class).setCacheObject(getCacheKey(key), dictDatas);
     }
 
+    public static void setProudCache(String key, List<ProductInfow> prodDatas){
+        SpringUtils.getBean(RedisCache.class).setCacheObject(getCacheKey(key), prodDatas);
+    }
+
     /**
      * 获取字典缓存
      * 
@@ -46,6 +55,20 @@ public class DictUtils
         }
         return null;
     }
+
+    /**
+     * 获取商品
+     * */
+    public static List<ProductInfow> getProduCache(String key){
+        Object cacheObject = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
+        if (StringUtils.isNotNull(cacheObject)){
+            List<ProductInfow> produDatas = StringUtils.cast(cacheObject);
+            return produDatas;
+        }
+        return null;
+    }
+
+
 
     /**
      * 根据字典类型和字典值获取字典标签

@@ -28,6 +28,7 @@ import com.ruoyi.system.service.ISysDictTypeService;
  * 
  * @author ruoyi
  */
+
 @RestController
 @RequestMapping("/system/dict/type")
 public class SysDictTypeController extends BaseController

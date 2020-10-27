@@ -2,10 +2,8 @@ package com.ruoyi.system.service.zhaungxiuservice.shopService;
 
 import com.ruoyi.system.domain.zhuangxiumain.shopMain.ProductInfo;
 import com.ruoyi.system.domain.zhuangxiumain.vo.ProductInfoVo;
-import com.ruoyi.system.response.Result;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ProductInfoService {
 
@@ -16,12 +14,20 @@ public interface ProductInfoService {
 
     public List<ProductInfo> findAlList(ProductInfo productInfo);
 
-    public ProductInfo selectListId(Long productid);
+    public ProductInfo selectListId(Integer productid);
 
 
     public int updataProduct(ProductInfo productInfo);
 
    public int deleteConfigById(Long productid);
     public int deleteConfigByIds(Long[] productids);
+
+
+// 这个是店铺订单用的
+    public List<ProductInfo> findAllddList(ProductInfo productInfo);
+    public ProductInfo selectListddId(Integer categoryId);
+    public List<ProductInfo> findAllddListTwo(ProductInfo productInfo);
+//**********
+
 
 }

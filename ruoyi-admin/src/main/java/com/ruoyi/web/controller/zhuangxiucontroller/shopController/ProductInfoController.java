@@ -6,21 +6,18 @@ import com.ruoyi.common.core.domain.AjaxResult;
 
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.zhuangxiumain.shopMain.ProductInfo;
 import com.ruoyi.system.domain.zhuangxiumain.vo.ProductInfoVo;
-import com.ruoyi.system.response.Result;
 import com.ruoyi.system.service.zhaungxiuservice.shopService.ProductInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
-@RequestMapping("/productinfo")
+@RequestMapping("/shopping/goods")
 public class ProductInfoController extends BaseController {
 
     @Autowired(required = false)
@@ -36,6 +33,8 @@ public class ProductInfoController extends BaseController {
      * 根据参数编号获取详细信息
      */
 
+
+    @PreAuthorize("@ss.hasPermi('system:info:query')")
     @GetMapping(value = "/{productId}")
     public AjaxResult getInfo(@PathVariable Long productid)
     {
@@ -47,7 +46,7 @@ public class ProductInfoController extends BaseController {
      * TableDataInfo 分页工具类
      */
 
-    @GetMapping("/list")
+    @GetMapping("/findAllList")
     public TableDataInfo list(ProductInfoVo productInfoVo)
     {
 //        设置请求分页数据
@@ -60,8 +59,8 @@ public class ProductInfoController extends BaseController {
     /***
      * 查询商品
      * */
-    @Log(title = "查询商品列表", businessType = BusinessType.EXPORT)
-    @GetMapping("/findAllList")
+    @PreAuthorize("@ss.hasPermi('shopping:goods:list')")
+    @GetMapping("/list")
     public TableDataInfo findAllList(ProductInfo productInfo){
         startPage();
         List<ProductInfo> list = productInfoService.findAlList(productInfo);
@@ -72,7 +71,7 @@ public class ProductInfoController extends BaseController {
     /**
      * 修改数据
      * **/
-
+    @PreAuthorize("@ss.hasPermi('shopping:goods:edit')")
     @Log(title = "修改商品", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult updataProduct(@RequestBody ProductInfo productInfo){

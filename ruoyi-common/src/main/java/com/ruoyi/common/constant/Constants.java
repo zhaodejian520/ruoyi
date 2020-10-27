@@ -123,6 +123,12 @@ public class Constants
     public static final String SYS_DICT_KEY = "sys_dict:";
 
     /**
+     * 供应给管理
+     * */
+    public static final String SYS_SUPP_KEY ="sys_supp";
+
+
+    /**
      * 资源映射路径 前缀
      */
     public static final String RESOURCE_PREFIX = "/profile";

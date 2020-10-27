@@ -39,4 +39,21 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 //        productCategory.setCategoryStatus(0);
         return productCategoryMapper.updataByOneId(productCategory);
     }
+
+
+
+    //        <!--*************  以上是忘了干啥的了  ***************-->
+//    <!--*************** 以下是店铺中分类用的 *********************-->
+
+    @Override
+    public ProductCategory selectProductCategoryById(Integer categoryId) {
+        return productCategoryMapper.selectProductCategoryById(categoryId);
+    }
+
+    @Override
+    public List<ProductCategory> selectProductCategoryList(ProductCategory productCategory) {
+        return productCategoryMapper.selectProductCategoryList(productCategory);
+    }
+
+
 }

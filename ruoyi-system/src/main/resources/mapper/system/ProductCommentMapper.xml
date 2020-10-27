@@ -57,7 +57,7 @@
     <select id="findAllList" parameterType="ProductComment" resultMap="ProductCommentResult">
         <include refid="ProductCommentList"/>
         <where>
-            <if test="productid !=null">
+            <if test="userId !=null">
                 and pi.user_id = #{userId}
             </if>
             <if test="productName != null and productName != ''">

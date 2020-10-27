@@ -4,33 +4,73 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.shopMapper.ProductInfoMapper">
     <resultMap id="ProductInfoResult" type="ProductInfo">
-        <id     property="productid"      column="product_id"      />
-        <result property="productcore"    column="product_core"    />
-        <result property="productname"    column="product_name"    />
-        <result property="barcode"    column="bar_code"    />
-        <result property="brandid"    column="brand_id"    />
-        <result property="onecategoryid"    column="one_category_id"    />
-        <result property="twocategoryid"    column="two_category_id"    />
-        <result property="threecategoryid"    column="three_category_id"    />
-        <result property="supplierid"    column="supplier_id"    />
-        <result property="categoryid"    column="category_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productCore"    column="product_core"    />
+        <result property="productName"    column="product_name"    />
+        <result property="barCode"    column="bar_code"    />
+        <result property="brandId"    column="brand_id"    />
+        <result property="oneCategoryId"    column="one_category_id"    />
+        <result property="twoCategoryId"    column="two_category_id"    />
+        <result property="threeCategoryId"    column="three_category_id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="categoryId"    column="category_id"    />
         <result property="price"    column="price"    />
-        <result property="averagecost"    column="average_cost"    />
-        <result property="publishstatus"    column="publish_status"    />
-        <result property="auditstatus"    column="audit_status"    />
+        <result property="averageCost"    column="average_cost"    />
+        <result property="publishStatus"    column="publish_status"    />
+        <result property="auditStatus"    column="audit_status"    />
         <result property="weight"    column="weight"    />
         <result property="length"    column="length"    />
         <result property="height"    column="height"    />
         <result property="width"    column="width"    />
-        <result property="colortype"    column="color_type"    />
-        <result property="productiondate"    column="production_date"    />
-        <result property="shelflife"    column="shelf_life"    />
+        <result property="colorType"    column="color_type"    />
+        <result property="productionDate"    column="production_date"    />
+        <result property="shelfLife"    column="shelf_life"    />
         <result property="descript"    column="descript"    />
         <result property="indate"    column="indate"    />
-        <result property="modifiedtime"    column="modified_time"    />
-        <result property="salesQuantity"    column="sales_quantity"    />
-        <result property="labelName"    column="label_name"    />
+        <result property="modifiedTime"    column="modified_time"    />
         <result property="cornerQuantity"    column="corner_quantity"    />
+        <result property="labelName"    column="label_name"    />
+        <result property="salesQuantity"    column="sales_quantity"    />
+        <result property="wpId"    column="wp_id"    />
+        <result property="wId"    column="w_id"    />
+        <result property="currentCnt"    column="current_cnt"    />
+        <result property="lockCnt"    column="lock_cnt"    />
+        <result property="inTransitCnt"    column="in_transit_cnt"    />
+        <result property="averageCost"    column="average_cost"    />
+        <result property="modifiedTime"    column="modified_time"    />
+        <result property="userId"    column="user_id"    />
+
+    </resultMap>
+
+
+    <resultMap id="ProductInfoResultw" type="ProductInfow">
+        <result property="productId"    column="product_id"    />
+        <result property="productCore"    column="product_core"    />
+        <result property="productName"    column="product_name"    />
+        <result property="barCode"    column="bar_code"    />
+        <result property="brandId"    column="brand_id"    />
+        <result property="oneCategoryId"    column="one_category_id"    />
+        <result property="twoCategoryId"    column="two_category_id"    />
+        <result property="threeCategoryId"    column="three_category_id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="price"    column="price"    />
+        <result property="averageCost"    column="average_cost"    />
+        <result property="publishStatus"    column="publish_status"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="weight"    column="weight"    />
+        <result property="length"    column="length"    />
+        <result property="height"    column="height"    />
+        <result property="width"    column="width"    />
+        <result property="colorType"    column="color_type"    />
+        <result property="productionDate"    column="production_date"    />
+        <result property="shelfLife"    column="shelf_life"    />
+        <result property="descript"    column="descript"    />
+        <result property="indate"    column="indate"    />
+        <result property="modifiedTime"    column="modified_time"    />
+        <result property="cornerQuantity"    column="corner_quantity"    />
+        <result property="labelName"    column="label_name"    />
+        <result property="salesQuantity"    column="sales_quantity"    />
         <result property="wpId"    column="wp_id"    />
         <result property="wId"    column="w_id"    />
         <result property="currentCnt"    column="current_cnt"    />
@@ -40,6 +80,61 @@
         <result property="modifiedTime"    column="modified_time"    />
 
     </resultMap>
+
+
+    <sql id="selectProductInfoVo">
+        select product_id, product_core, product_name, bar_code, brand_id, one_category_id, two_category_id, three_category_id, supplier_id, category_id, price, average_cost, publish_status, audit_status, weight, length, height, width, color_type, production_date, shelf_life, descript, indate, modified_time, corner_quantity, label_name, sales_quantity from product_info
+    </sql>
+
+
+    <!--这个是在店铺订单里面展示用的-->
+    <select id="findAllddList"  parameterType="ProductInfo" resultMap="ProductInfoResult">
+        select pi.product_id,pi.category_id,pi.product_core,pi.product_name,pi.bar_code,pi.price
+        from product_info pi,product_category pc, sys_user su
+        where pi.category_id = pc.category_id and pc.customer_id = su.user_id
+        and pi.category_id = #{categoryId} and su.user_id=#{userId}
+    </select>
+
+    <select id="findAllddListTwo"  parameterType="ProductInfo" resultMap="ProductInfoResult">
+        select pi.product_id,pi.category_id,pi.product_core,pi.product_name,pi.bar_code,pi.price
+        from product_info pi,product_category pc, sys_user su
+        where pi.category_id = pc.category_id and pc.customer_id = su.user_id
+        and su.user_id=#{userId}
+    </select>
+
+    <select id="selectListddId" parameterType="Integer" resultMap="ProductInfoResult">
+        select pi.product_id,pi.category_id,pi.product_core,pi.product_name,pi.bar_code,pi.price
+        from product_info pi,product_category pc
+        where pi.category_id = pc.category_id
+        and pi.product_id = #{productId}
+    </select>
+
+
+    <!--===============-->
+
+
+    <select id="selectProductInfoList" parameterType="ProductInfo" resultMap="ProductInfoResult">
+        <include refid="selectProductInfoVo"/>
+        <where>
+            <if test="productCore != null  and productCore != ''"> and product_core = #{productCore}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectProductInfoById" parameterType="Integer" resultMap="ProductInfoResult">
+        <include refid="selectProductInfoVo"/>
+        where product_id = #{productId}
+    </select>
+
+
+    <select id="selectProductByType" parameterType="ProductInfow" resultMap="ProductInfoResultw">
+        <include refid="selectProductInfoVo"/>
+        where product_name = #{productName}
+    </select>
+
+
+
+
 
     <sql id="ProductInfoMain">
                select pi.product_id,pi.product_core,pi.product_name ,pi.bar_code ,pi.brand_id ,pi.one_category_id ,pi.two_category_id ,pi.three_category_id ,pi.supplier_id ,pi.category_id ,pi.price ,pi.average_cost ,pi.publish_status ,pi.audit_status,pi.production_date,pi.shelf_life,pi.descript ,pi.indate,pi.modified_time ,pi.sales_quantity,pi.label_name,pi.corner_quantity,wp.wp_id,wp.w_id ,wp.current_cnt ,wp.lock_cnt ,wp.in_transit_cnt ,wp.average_cost ,wp.modified_time

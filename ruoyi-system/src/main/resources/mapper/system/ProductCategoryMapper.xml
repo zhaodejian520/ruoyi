@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.zhuangxiumapper.shopMapper.ProductCategoryMapper">
     <resultMap id="ProductCategoryResult" type="ProductCategory">
-        <id     property="categoryId"      column="category_id"      />
+        <result property="categoryId"    column="category_id"    />
         <result property="brandId"    column="brand_id"    />
         <result property="categoryName"    column="category_name"    />
         <result property="categoryCode"    column="category_code"    />
@@ -12,6 +12,8 @@
         <result property="categoryLevel"    column="category_level"    />
         <result property="categoryStatus"    column="category_status"    />
         <result property="modifiedTime"    column="modified_time"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="userId"    column="user_id"    />
     </resultMap>
 
     <sql id="ProductCategoryMain">
@@ -58,6 +60,34 @@
     <delete id="deleteCategoryByIds" parameterType="Long">
         delete from product_category where category_id = #{categoryId}
     </delete>
+
+
+    <!--*************  以上是忘了干啥的了  ***************-->
+    <!--*************** 以下是店铺中分类用的 *********************-->
+
+    <sql id="selectProductCategoryVo">
+        select category_id, brand_id, category_name, category_code, parent_id, category_level, category_status, modified_time from product_category
+    </sql>
+
+    <select id="selectProductCategoryList" parameterType="ProductCategory" resultMap="ProductCategoryResult">
+        select pc.category_id, pc.brand_id, pc.category_name, pc.category_code, pc.parent_id, pc.category_level, pc.category_status, pc.modified_time, pc.customer_id
+        from product_category pc,sys_user su
+        <where>
+            pc.customer_id = su.user_id
+            <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
+            <if test="userId != null and userId != ''">
+                AND su.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+
+
+
+    <select id="selectProductCategoryById" parameterType="Integer" resultMap="ProductCategoryResult">
+        <include refid="selectProductCategoryVo"/>
+        where category_id = #{categoryId}
+    </select>
 
 
 
