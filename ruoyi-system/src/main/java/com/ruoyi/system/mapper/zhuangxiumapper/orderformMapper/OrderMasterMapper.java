@@ -12,18 +12,9 @@ public interface OrderMasterMapper {
 
     public List<OrderMaster> findAll(OrderMaster orderMaster);
 
-
-
-
-    // 以下是 店铺订单中用的
-    public List<OrderMaster> selectOrderDingDanList(OrderMaster orderMaster);
-    public OrderMaster selectOrderDingDanById(Integer orderId);
-
-
+    public OrderMaster selectById(Integer orderDetailId);
 
     // 总权限的订单管理 以下
-
-
     public OrderMaster selectOrderMasterById(Integer orderId);
     public List<OrderMaster> selectOrderMasterList(OrderMaster orderMaster);
     public int insertOrderMaster(OrderMaster orderMaster);
@@ -33,8 +24,11 @@ public interface OrderMasterMapper {
 
 
 
-
-
+    // 以下是 店铺订单中用的
+    public List<OrderMaster> selectOrderDingDanList(OrderMaster orderMaster);
+    public OrderMaster selectOrderDingDanById(Integer orderId);
+    public List<OrderMaster> findAllListVoYI(OrderMaster orderMaster);
+    public int updateFaHuo(OrderMaster orderMaster);
 
 
 

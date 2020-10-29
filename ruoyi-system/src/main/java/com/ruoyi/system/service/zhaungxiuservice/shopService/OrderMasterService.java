@@ -16,9 +16,9 @@ public interface OrderMasterService {
     // 店铺中的订单使用的 以下****************************
     public List<OrderMaster> selectOrderDingDanList(OrderMaster orderMaster);
     public OrderMaster selectOrderDingDanById(Integer orderId);
-
-
-
+    public List<OrderMaster> findAllListVoYI(OrderMaster orderMaster);
+    public int updateFaHuo(OrderMaster orderMaster);
+    public OrderMaster selectById(Integer orderId);
 
 
     // 总权限的订单管理 以下******************************

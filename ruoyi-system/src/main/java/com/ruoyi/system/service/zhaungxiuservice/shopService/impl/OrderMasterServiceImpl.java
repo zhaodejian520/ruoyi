@@ -52,6 +52,21 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         return orderMasterMapper.selectOrderDingDanById(orderId);
     }
 
+    @Override
+    public List<OrderMaster> findAllListVoYI(OrderMaster orderMaster) {
+        return orderMasterMapper.findAllListVoYI(orderMaster);
+    }
+
+    @Override
+    public int updateFaHuo(OrderMaster orderMaster) {
+        return orderMasterMapper.updateFaHuo(orderMaster);
+    }
+
+    @Override
+    public OrderMaster selectById(Integer orderId) {
+        return orderMasterMapper.selectOrderMasterById(orderId);
+    }
+
 
     // 总权限的订单管理 以下****************************
 

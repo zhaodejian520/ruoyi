@@ -121,7 +121,7 @@ public class OrderMaster implements Serializable {
   private double productPrice;
   private long userId;
   private long productId;
-
+  private Integer orderDetailId;
 
 
 }

@@ -32,6 +32,8 @@
         <result property="userId"    column="user_id"    />
         <result property="productId"    column="product_id"    />
         <result property="userName"    column="user_name"    />
+        <result property="orderDetailId"    column="order_detail_id"    />
+
     </resultMap>
 
 
@@ -68,26 +70,47 @@
         </where>
     </select>
 
+    <sql id="selectOrderMasterVo">
+        select order_id, order_sn, customer_id, shipping_user, province, city, district, address, payment_method, order_money, district_money, shipping_money, payment_money, shipping_comp_name, shipping_sn, create_time, shipping_time, pay_time, receive_time, order_status, order_point, invoice_time, modified_time from order_master
+    </sql>
 
 
-    <!--  以下几个 是店铺中的 订单中的 -->
+    <select id="selectById" parameterType="Integer" resultMap="OrderMasterResult">
+        <include refid="selectOrderMasterVo"/>
+        where order_id = #{orderId}
+    </select>
+
+    <!--  以下几个 是店铺中的 订单中的************************** -->
 
     <select id="selectOrderDingDanList" parameterType="OrderMaster" resultMap="OrderMasterResult">
-       select om.order_sn, om.shipping_user, om.address,om.payment_method,om.order_money ,om.shipping_time,om.pay_time,om.receive_time,su.user_name
-				from order_master om,order_detail od, sys_user su
-				where om.order_id = od.order_id and om.customer_id = su.user_id
-				and od.product_id = #{productId} and su.user_id =#{userId}
+        select od.order_detail_id ,od.product_id,om.order_id,om.order_sn, om.shipping_user, om.address,om.payment_method,om.order_money ,om.shipping_time,om.pay_time,om.receive_time,pi.product_name ,su.user_name,om.order_status
+        from order_master om,order_detail od,product_info pi,sys_user su
+        where om.order_id = od.order_id and od.product_id = pi.product_id and om.customer_id = su.user_id
+        and pi.product_id = #{productId} and su.user_id = #{userId}
     </select>
 
     <select id="selectOrderDingDanById" parameterType="Integer" resultMap="OrderMasterResult">
-        select om.order_sn, om.shipping_user, om.address,om.payment_method,om.order_money ,om.shipping_time,om.pay_time,om.receive_time,pi.product_name ,su.user_name
+        select om.order_id,om.order_sn, om.shipping_user, om.address,om.payment_method,om.order_money ,om.shipping_time,om.pay_time,om.receive_time,pi.product_name ,su.user_name,om.order_status
         from order_master om,order_detail od, product_info pi, sys_user su
         where om.order_id = od.order_id and od.product_id = pi.product_id and om.customer_id = su.user_id
-        and pi.order_id = #{orderId}
+        and om.order_id = #{orderId}
     </select>
 
+    <sql id="findAllListVo">
+        select om.order_id,om.order_sn, om.shipping_user, om.address,om.payment_method,om.order_money ,om.shipping_time,om.pay_time,om.receive_time,pi.product_name ,su.user_name,om.order_status
+        from order_master om,order_detail od, product_info pi, sys_user su
+        where om.order_id = od.order_id and od.product_id = pi.product_id and om.customer_id = su.user_id
+        and pi.product_id = #{productId} and su.user_id = #{userId}
+    </sql>
 
+    <select id="findAllListVoYI" parameterType="OrderMaster" resultMap="OrderMasterResult">
+        <include refid="findAllListVo" />
+        and om.order_status = #{orderStatus}
+    </select>
 
+    <update id="updateFaHuo" parameterType="OrderMaster">
+        update order_master set order_status = 2 where order_id = #{orderId}
+    </update>
 
 
 
@@ -167,9 +190,8 @@
     <update id="updateOrderMaster" parameterType="OrderMaster">
         update order_master
         <trim prefix="SET" suffixOverrides=",">
-            <if test="orderSn != null">order_sn = #{orderSn},</if>
-            <if test="customerId != null">customer_id = #{customerId},</if>
-            <if test="shippingUser != null and shippingUser != ''">shipping_user = #{shippingUser},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+
         </trim>
         where order_id = #{orderId}
     </update>

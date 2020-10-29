@@ -73,6 +73,23 @@ public class OrderMasterController extends BaseController {
         return util.exportExcel(allList, "ordermaster");
     }
 
+    /**
+     * 修改订单主
+     */
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:edit')")
+    @Log(title = "订单修改", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public AjaxResult edit(@RequestBody OrderMaster orderMaster)
+    {
+        return toAjax(orderMasterService.updateOrderMaster(orderMaster));
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:selectById')")
+    @GetMapping(value = "/selectById/{orderId}")
+    public AjaxResult selectById(@PathVariable("orderId") Integer orderId)
+    {
+        return AjaxResult.success(orderMasterService.selectById(orderId));
+    }
 
 
 //    以上是订单的***********************************
@@ -96,6 +113,97 @@ public class OrderMasterController extends BaseController {
     @GetMapping("/getInfodd/{orderId}")
     public AjaxResult selectOrderDingDanById(@PathVariable("orderId") Integer orderId){
         return AjaxResult.success(orderMasterService.selectOrderMasterById(orderId));
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:updateFaHuo')")
+    @Log(title = "修改订单状态", businessType = BusinessType.UPDATE)
+    @PutMapping("/updateFaHuo")
+    public AjaxResult updateFaHuo(@RequestBody OrderMaster orderMaster){
+        return toAjax(orderMasterService.updateFaHuo(orderMaster));
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:findAllListVoYI')")
+    @GetMapping("/findAllListVoYI")
+    public TableDataInfo findAllListVoYI(OrderMaster orderMaster){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        orderMaster.setUserId(userId);
+        orderMaster.setOrderStatus(1);
+        List<OrderMaster> list1 = orderMasterService.findAllListVoYI(orderMaster);
+        return getDataTable(list1);
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:findAllListVoER')")
+    @GetMapping("/findAllListVoER")
+    public TableDataInfo findAllListVoER(OrderMaster orderMaster){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        orderMaster.setUserId(userId);
+        orderMaster.setOrderStatus(2);
+        List<OrderMaster> list1 = orderMasterService.findAllListVoYI(orderMaster);
+        return getDataTable(list1);
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:findAllListVoSAN')")
+    @GetMapping("/findAllListVoSAN")
+    public TableDataInfo findAllListVoSAN(OrderMaster orderMaster){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        orderMaster.setUserId(userId);
+        orderMaster.setOrderStatus(3);
+        List<OrderMaster> list1 = orderMasterService.findAllListVoYI(orderMaster);
+        return getDataTable(list1);
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:findAllListVoSI')")
+    @GetMapping("/findAllListVoSI")
+    public TableDataInfo findAllListVoSI(OrderMaster orderMaster){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        orderMaster.setUserId(userId);
+        orderMaster.setOrderStatus(4);
+        List<OrderMaster> list1 = orderMasterService.findAllListVoYI(orderMaster);
+        return getDataTable(list1);
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:findAllListVoWU')")
+    @GetMapping("/findAllListVoWU")
+    public TableDataInfo findAllListVoWU(OrderMaster orderMaster){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        orderMaster.setUserId(userId);
+        orderMaster.setOrderStatus(5);
+        List<OrderMaster> list1 = orderMasterService.findAllListVoYI(orderMaster);
+        return getDataTable(list1);
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:findAllListVoLIU')")
+    @GetMapping("/findAllListVoLIU")
+    public TableDataInfo findAllListVoLIU(OrderMaster orderMaster){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        orderMaster.setUserId(userId);
+        orderMaster.setOrderStatus(6);
+        List<OrderMaster> list1 = orderMasterService.findAllListVoYI(orderMaster);
+        return getDataTable(list1);
+    }
+
+    @PreAuthorize("@ss.hasPermi('shopping:ordermaster:findAllListVoQI')")
+    @GetMapping("/findAllListVoQI")
+    public TableDataInfo findAllListVoQI(OrderMaster orderMaster){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        Long userId = loginUser.getUser().getUserId();
+        orderMaster.setUserId(userId);
+        orderMaster.setOrderStatus(7);
+        List<OrderMaster> list1 = orderMasterService.findAllListVoYI(orderMaster);
+        return getDataTable(list1);
     }
 
 
